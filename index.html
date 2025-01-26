@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: rgba(255, 255, 255, 0.81);
+      color: #2F3437;
+      font-family: 'Roboto Mono', sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+    }
+
+    .timer {
+      font-size: 6rem;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #2F3437;
+    }
+
+    button { 
+      font-size: 1rem;
+      margin: 5px;
+      padding: 10px 20px;
+      border: 1px solid transparent; 
+      border-radius: 100px;
+      cursor: pointer;
+      background-color: #2F3437;
+      color: #ecf0f1;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      border-radius: 100px;
+      background-color: rgba(47, 52, 55, 0);
+      border: 1px solid #2F3437;
+      color: #2F3437;
+    }
+
+    .mode-buttons button {
+      font-size: 0.9rem;
+      margin: 5px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="mode-buttons">
+      <button onclick="setTimer(5)">SHORT BREAK</button>
+      <button onclick="setTimer(25)">FOCUS</button>
+      <button onclick="setTimer(15)">LONG BREAK</button>
+    </div>
+    <div class="timer" id="timer">05:00</div>
+    <div>
+      <button onclick="startTimer()">START</button>
+      <button onclick="resetTimer()">RESET</button>
+    </div>
+  </div>
+  <script>
+    let countdown;
+    let totalSeconds = 300; // Default to 5 minutes
+    let initialSeconds = 300; // To keep track of the starting value
+
+    function setTimer(minutes) {
+      clearInterval(countdown);
+      initialSeconds = minutes * 60; // Update the initial value
+      totalSeconds = initialSeconds; // Reset totalSeconds to match the new timer
+      updateTimerDisplay();
+    }
+
+    function startTimer() {
+      clearInterval(countdown); // Ensure no overlapping intervals
+      countdown = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(countdown);
+          alert("Time's up!");
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(countdown);
+      totalSeconds = initialSeconds; // Reset to the initial time
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+      const seconds = String(totalSeconds % 60).padStart(2, "0");
+      document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+    }
+  </script>
+</body>
+</html>
